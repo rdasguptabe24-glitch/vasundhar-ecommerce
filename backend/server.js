@@ -1,9 +1,9 @@
-const Order = require("./models/Order");
+const Order = require("./models/order");
 const admin = require("./middleware/admin");
 const auth = require("./middleware/auth");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const User = require("./models/User");
+const User = require("./models/user");
 require("dotenv").config();
 const multer = require("multer");
 const path = require("path");
@@ -11,15 +11,13 @@ console.log("THIS IS MY SERVER");
 const express = require("express");
 const cors = require("cors");
 const connectDB = require("./config/db");
-const Product = require("./models/Product");
+const Product = require("./models/product");
 const app = express();
 app.use(
   cors({
-    origin: [
-      "https://vasundhar-ecommerce.vercel.app"
-    ],
+    origin: ["https://vasundhar-ecommerce.vercel.app"],
     credentials: true,
-  })
+  }),
 );
 app.use(express.json());
 app.use("/uploads", express.static("uploads"));
@@ -356,5 +354,5 @@ app.use((req, res) => {
 connectDB();
 
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
