@@ -1,0 +1,22 @@
+/* Reset */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    font-family:Arial, Helvetica, sans-serif;
+
+    background:#8c6a5c;
+
+    color:#333;
+
+}
+
+.VASUNDHARA img {
+    height: 10px;
+    width: auto;
+}

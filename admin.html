@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <div class="admin-layout">
+
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+
+        <div class="admin-logo">
+            <img src="images/VASUNDHARA.jpeg" alt="Logo">
+            <h2>Vasundhara</h2>
+            <p>Admin Panel</p>
+        </div>
+
+        <ul class="admin-menu">
+            <li class="active">📦 Products</li>
+            <li>🛒 Orders</li>
+            <li>📊 Dashboard</li>
+            <li>⚙ Settings</li>
+        </ul>
+
+        <button onclick="logout()" class="logout-btn">
+            Logout
+        </button>
+
+    </aside>
+
+    <!-- Main -->
+    <main class="admin-main">
+
+        <div class="admin-header">
+            <h1>Product Management</h1>
+            <p>Manage your boutique collection</p>
+        </div>
+
+        <!-- Stats -->
+        <div class="admin-stats">
+
+            <div class="stat-card">
+                <h3>Total Products</h3>
+                <span id="productCount">0</span>
+            </div>
+
+            <div class="stat-card">
+                <h3>Categories</h3>
+                <span>3</span>
+            </div>
+
+            <div class="stat-card">
+                <h3>In Stock</h3>
+                <span id="stockCount">0</span>
+            </div>
+
+        </div>
+
+        <!-- Product Form -->
+
+        <section class="admin-card">
+
+            <h2>Add Product</h2>
+
+            <form id="productForm">
+
+                <input type="hidden" id="productId">
+
+                <input type="hidden" id="image">
+
+                <div class="form-grid">
+
+                    <div>
+
+                        <label>Product Name</label>
+
+                        <input
+                            type="text"
+                            id="name"
+                            required>
+
+                    </div>
+
+                    <div>
+
+                        <label>Price</label>
+
+                        <input
+                            type="number"
+                            id="price"
+                            required>
+
+                    </div>
+
+                    <div>
+
+                        <label>Category</label>
+
+                        <input
+                            type="text"
+                            id="category"
+                            required>
+
+                    </div>
+
+                    <div>
+
+                        <label>Stock</label>
+
+                        <input
+                            type="number"
+                            id="stock"
+                            required>
+
+                    </div>
+
+                </div>
+
+                <label>Description</label>
+
+                <textarea
+                    id="description"></textarea>
+
+                <label>Upload Image</label>
+
+                <input
+                    type="file"
+                    id="imageFile"
+                    accept="image/*">
+
+                <button class="save-btn">
+                    Save Product
+                </button>
+
+            </form>
+
+        </section>
+
+        <!-- Products -->
+
+        <section class="admin-card">
+
+            <h2>All Products</h2>
+
+            <div id="productList"></div>
+
+        </section>
+
+    </main>
+
+</div>
+
+<script src="js/admin.js"></script>
+
+</body>
+</html>
