@@ -1,3 +1,4 @@
+const crypto = require("crypto");
 const Razorpay = require("razorpay");
 const Order = require("./models/order");
 const admin = require("./middleware/admin");
@@ -369,6 +370,52 @@ app.post("/create-order", async (req, res) => {
 
     res.status(500).json({
       message: "Unable to create order",
+    });
+  }
+});
+
+app.post("/verify-payment", auth, async (req, res) => {
+  try {
+    const {
+      razorpay_order_id,
+      razorpay_payment_id,
+      razorpay_signature,
+      items,
+      total,
+    } = req.body;
+
+    const body = razorpay_order_id + "|" + razorpay_payment_id;
+
+    const expectedSignature = crypto
+      .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
+      .update(body.toString())
+      .digest("hex");
+
+    if (expectedSignature !== razorpay_signature) {
+      return res.status(400).json({
+        success: false,
+        message: "Payment verification failed",
+      });
+    }
+
+    const order = await Order.create({
+      user: req.user.id,
+      items,
+      total,
+      status: "Paid",
+      paymentId: razorpay_payment_id,
+    });
+
+    res.json({
+      success: true,
+      order,
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: error.message,
     });
   }
 });

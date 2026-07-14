@@ -135,8 +135,8 @@ if (checkoutBtn) {
       description: "Order Payment",
 
       handler: async function (response) {
-        const saveOrder = await fetch(
-          "https://vasundhar-ecommerce-production.up.railway.app/orders",
+        const verifyResponse = await fetch(
+          "https://vasundhar-ecommerce-production.up.railway.app/verify-payment",
           {
             method: "POST",
 
@@ -146,20 +146,29 @@ if (checkoutBtn) {
             },
 
             body: JSON.stringify({
+              razorpay_order_id: response.razorpay_order_id,
+
+              razorpay_payment_id: response.razorpay_payment_id,
+
+              razorpay_signature: response.razorpay_signature,
+
               items: cart,
+
               total: total,
             }),
           },
         );
 
-        if (saveOrder.ok) {
+        const result = await verifyResponse.json();
+
+        if (result.success) {
           alert("Payment Successful!");
 
           localStorage.removeItem("cart");
 
           window.location.href = "myorders.html";
         } else {
-          alert("Payment completed but order couldn't be saved.");
+          alert("Payment Verification Failed!");
         }
       },
 
