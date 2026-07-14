@@ -129,22 +129,23 @@ if (checkoutBtn) {
     }
 
     try {
-      const orderResponse = await fetch(
-        `${API_BASE_URL}/create-order`,
-        {
-          method: "POST",
+      const orderResponse = await fetch(`${API_BASE_URL}/create-order`, {
+        method: "POST",
 
-          headers: {
-            "Content-Type": "application/json",
-          },
-
-          body: JSON.stringify({
-            items: cart,
-          }),
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+
+        body: JSON.stringify({
+          items: cart,
+        }),
+      });
+
+      console.log("Status:", orderResponse.status);
 
       const data = await orderResponse.json();
+
+      console.log("Response:", data);
 
       const order = data.order;
 
@@ -206,9 +207,8 @@ if (checkoutBtn) {
 
       rzp.open();
     } catch (err) {
-      console.error(err);
-
-      alert("Unable to initiate payment.");
+      console.error("Checkout Error:", err);
+      alert("Unable to initiate payment. Check the browser console (F12).");
     }
   });
 }
