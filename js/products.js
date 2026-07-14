@@ -81,13 +81,10 @@ function attachCartEvents() {
 
       const product = {
         id: button.dataset.id,
-        name: button.dataset.name,
-        price: Number(button.dataset.price),
-        image: button.dataset.image,
         quantity: 1,
       };
 
-      const existing = cart.find((item) => item.id === product.id);
+      const existing = cart.find(item => item.id === product.id);
 
       if (existing) {
         existing.quantity++;

@@ -1,76 +1,103 @@
 const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-console.log(cart);
-
 const cartItems = document.getElementById("cart-items");
-
 const grandTotal = document.getElementById("grand-total");
+const checkoutBtn = document.getElementById("checkoutBtn");
 
-let total = 0;
+let products = [];
 
-cart.forEach((product) => {
-  total += product.price * product.quantity;
+async function loadCart() {
+  try {
+    const response = await fetch(
+      "https://vasundhar-ecommerce-production.up.railway.app/products",
+    );
 
-  cartItems.innerHTML += `
+    products = await response.json();
+
+    renderCart();
+  } catch (err) {
+    console.error(err);
+
+    alert("Unable to load products.");
+  }
+}
+
+function renderCart() {
+  cartItems.innerHTML = "";
+
+  let total = 0;
+
+  cart.forEach((item) => {
+    const product = products.find((p) => p._id === item.id);
+
+    if (!product) return;
+
+    total += product.price * item.quantity;
+
+    cartItems.innerHTML += `
+
 <div class="cart-card">
 
-    <div class="cart-product">
+<div class="cart-product">
 
-    <img src="https://vasundhar-ecommerce-production.up.railway.app/uploads/${product.image}" width="100">
+<img
+src="https://vasundhar-ecommerce-production.up.railway.app/uploads/${product.image}"
+width="100">
 
-    <div>
+<div>
 
-        <h3>${product.name}</h3>
+<h3>${product.name}</h3>
 
-        <p>₹${product.price}</p>
+<p>₹${product.price}</p>
 
-    </div>
+</div>
 
 </div>
 
-    <div class="quantity">
+<div class="quantity">
 
-        <button onclick="decrease('${product.name}')">-</button>
+<button onclick="decrease('${item.id}')">-</button>
 
-        <span>${product.quantity}</span>
+<span>${item.quantity}</span>
 
-        <button onclick="increase('${product.name}')">+</button>
-
-    </div>
-
-    <button class="remove"
-            onclick="removeProduct('${product.name}')">
-
-        Remove
-
-    </button>
+<button onclick="increase('${item.id}')">+</button>
 
 </div>
+
+<button
+class="remove"
+onclick="removeProduct('${item.id}')">
+
+Remove
+
+</button>
+
+</div>
+
 `;
-});
+  });
 
-grandTotal.innerText = "Total : ₹" + total;
+  grandTotal.innerText = "Total : ₹" + total;
+}
 
-function increase(name) {
-  const product = cart.find((item) => item.name === name);
+function increase(id) {
+  const product = cart.find((item) => item.id === id);
 
   product.quantity++;
 
   saveCart();
 }
 
-function decrease(name) {
-  const product = cart.find((item) => item.name === name);
+function decrease(id) {
+  const product = cart.find((item) => item.id === id);
 
-  if (product.quantity > 1) {
-    product.quantity--;
-  }
+  if (product.quantity > 1) product.quantity--;
 
   saveCart();
 }
 
-function removeProduct(name) {
-  const index = cart.findIndex((item) => item.name === name);
+function removeProduct(id) {
+  const index = cart.findIndex((item) => item.id === id);
 
   cart.splice(index, 1);
 
@@ -80,10 +107,8 @@ function removeProduct(name) {
 function saveCart() {
   localStorage.setItem("cart", JSON.stringify(cart));
 
-  location.reload();
+  renderCart();
 }
-
-const checkoutBtn = document.getElementById("checkoutBtn");
 
 if (checkoutBtn) {
   checkoutBtn.addEventListener("click", async () => {
@@ -91,98 +116,101 @@ if (checkoutBtn) {
 
     if (!token) {
       alert("Please login first.");
+
       window.location.href = "login.html";
+
       return;
     }
 
     if (cart.length === 0) {
-      alert("Your cart is empty.");
+      alert("Cart is empty.");
+
       return;
     }
 
-    const total = cart.reduce(
-      (sum, item) => sum + item.price * item.quantity,
-      0,
-    );
+    try {
+      const orderResponse = await fetch(
+        "https://vasundhar-ecommerce-production.up.railway.app/create-order",
+        {
+          method: "POST",
 
-    // Create Razorpay Order
-    const orderResponse = await fetch(
-      "https://vasundhar-ecommerce-production.up.railway.app/create-order",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          items: cart,
-        }),
-      },
-    );
-
-    const data = await orderResponse.json();
-
-    const order = data.order;
-
-    const total = data.total;
-
-    const options = {
-      key: "rzp_test_TDR1xb0tCF0iVn",
-
-      amount: order.amount,
-
-      currency: order.currency,
-
-      order_id: order.id,
-
-      name: "Vasundhara",
-
-      description: "Order Payment",
-
-      handler: async function (response) {
-        const verifyResponse = await fetch(
-          "https://vasundhar-ecommerce-production.up.railway.app/verify-payment",
-          {
-            method: "POST",
-
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + token,
-            },
-
-            body: JSON.stringify({
-              razorpay_order_id: response.razorpay_order_id,
-
-              razorpay_payment_id: response.razorpay_payment_id,
-
-              razorpay_signature: response.razorpay_signature,
-
-              items: cart,
-
-              total: total,
-            }),
+          headers: {
+            "Content-Type": "application/json",
           },
-        );
 
-        const result = await verifyResponse.json();
+          body: JSON.stringify({
+            items: cart,
+          }),
+        },
+      );
 
-        if (result.success) {
-          alert("Payment Successful!");
+      const data = await orderResponse.json();
 
-          localStorage.removeItem("cart");
+      const order = data.order;
 
-          window.location.href = "myorders.html";
-        } else {
-          alert("Payment Verification Failed!");
-        }
-      },
+      const options = {
+        key: "rzp_test_TDR1xb0tCF0iVn",
 
-      theme: {
-        color: "#7a1f1f",
-      },
-    };
+        amount: order.amount,
 
-    const rzp = new Razorpay(options);
+        currency: order.currency,
 
-    rzp.open();
+        order_id: order.id,
+
+        name: "Vasundhara",
+
+        description: "Order Payment",
+
+        handler: async function (response) {
+          const verify = await fetch(
+            "https://vasundhar-ecommerce-production.up.railway.app/verify-payment",
+            {
+              method: "POST",
+
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + token,
+              },
+
+              body: JSON.stringify({
+                razorpay_order_id: response.razorpay_order_id,
+
+                razorpay_payment_id: response.razorpay_payment_id,
+
+                razorpay_signature: response.razorpay_signature,
+
+                items: cart,
+              }),
+            },
+          );
+
+          const result = await verify.json();
+
+          if (result.success) {
+            alert("Payment Successful!");
+
+            localStorage.removeItem("cart");
+
+            window.location.href = "myorders.html";
+          } else {
+            alert(result.message);
+          }
+        },
+
+        theme: {
+          color: "#7a1f1f",
+        },
+      };
+
+      const rzp = new Razorpay(options);
+
+      rzp.open();
+    } catch (err) {
+      console.error(err);
+
+      alert("Unable to initiate payment.");
+    }
   });
 }
+
+loadCart();
