@@ -29,7 +29,7 @@ fetch(`https://vasundhar-ecommerce-production.up.railway.app/products/${id}`)
 
     <div class="product-image">
 
-        <img src="${product.image}" alt="${product.name}">
+        <img src="https://vasundhar-ecommerce-production.up.railway.app/uploads/${product.image}" alt="${product.name}">
 
         <div class="quick-view">
 
