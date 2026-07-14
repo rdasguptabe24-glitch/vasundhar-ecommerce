@@ -8,7 +8,7 @@ form.addEventListener("submit", async (e) => {
   const password = document.getElementById("password").value;
 
   try {
-    const response = await fetch(`${API_BASE_URL}/login`, {
+    const response = await fetch("https://vasundhar-ecommerce-production.up.railway.app/login", {
       method: "POST",
 
       headers: {

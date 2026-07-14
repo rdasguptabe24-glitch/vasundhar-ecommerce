@@ -19,7 +19,7 @@ function displayProducts(products) {
     <div class="product-image">
 
         <img
-            src="${API_BASE_URL}/uploads/${product.image}"
+            src="https://vasundhar-ecommerce-production.up.railway.app/uploads/${product.image}"
             alt="${product.name}">
 
     </div>
@@ -111,7 +111,7 @@ function attachCartEvents() {
 }
 
 // Fetch products from backend
-fetch(`${API_BASE_URL}/products`)
+fetch("https://vasundhar-ecommerce-production.up.railway.app/products")
   .then((response) => response.json())
   .then((products) => {
     allProducts = products;

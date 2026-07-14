@@ -16,7 +16,7 @@ form.addEventListener("submit", async (e) => {
 
     try {
 
-        const response = await fetch(`${API_BASE_URL}/signup`, {
+        const response = await fetch("https://vasundhar-ecommerce-production.up.railway.app/signup", {
 
             method: "POST",
 

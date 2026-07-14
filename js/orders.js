@@ -9,7 +9,7 @@ const ordersContainer = document.getElementById("ordersContainer");
 
 async function loadOrders() {
   try {
-    const response = await fetch(`${API_BASE_URL}/orders`, {
+    const response = await fetch("https://vasundhar-ecommerce-production.up.railway.app/orders", {
       headers: {
         Authorization: "Bearer " + token,
       },

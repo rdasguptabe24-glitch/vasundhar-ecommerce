@@ -9,7 +9,7 @@ let products = [];
 async function loadCart() {
   try {
     const response = await fetch(
-      `${API_BASE_URL}/products`,
+      "https://vasundhar-ecommerce-production.up.railway.app/products",
     );
 
     products = await response.json();
@@ -41,7 +41,7 @@ function renderCart() {
 <div class="cart-product">
 
 <img
-src="${API_BASE_URL}/products/${product.image}"
+src="https://vasundhar-ecommerce-production.up.railway.app/products/${product.image}"
 width="100">
 
 <div>
@@ -163,7 +163,7 @@ if (checkoutBtn) {
 
         handler: async function (response) {
           const verify = await fetch(
-            `${API_BASE_URL}/verify-payment`,
+            "https://vasundhar-ecommerce-production.up.railway.app/verify-payment",
             {
               method: "POST",
 
