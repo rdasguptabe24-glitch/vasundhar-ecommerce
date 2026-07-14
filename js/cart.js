@@ -91,56 +91,85 @@ if (checkoutBtn) {
 
     if (!token) {
       alert("Please login first.");
-
       window.location.href = "login.html";
-
       return;
     }
 
     if (cart.length === 0) {
       alert("Your cart is empty.");
-
       return;
     }
 
-    const total = cart.reduce((sum, item) => {
-      return sum + item.price * item.quantity;
-    }, 0);
+    const total = cart.reduce(
+      (sum, item) => sum + item.price * item.quantity,
+      0,
+    );
 
-    try {
-      const response = await fetch("https://vasundhar-ecommerce-production.up.railway.app/orders", {
+    // Create Razorpay Order
+    const orderResponse = await fetch(
+      "https://vasundhar-ecommerce-production.up.railway.app/create-order",
+      {
         method: "POST",
-
         headers: {
           "Content-Type": "application/json",
-
-          Authorization: "Bearer " + token,
         },
-
         body: JSON.stringify({
-          items: cart,
-
-          total: total,
+          amount: total,
         }),
-      });
+      },
+    );
 
-      const data = await response.json();
+    const order = await orderResponse.json();
 
-      if (!response.ok) {
-        alert(data.message);
+    const options = {
+      key: "rzp_test_TDR1xb0tCF0iVn",
 
-        return;
-      }
+      amount: order.amount,
 
-      alert("Order placed successfully!");
+      currency: order.currency,
 
-      localStorage.removeItem("cart");
+      order_id: order.id,
 
-      window.location.reload();
-    } catch (error) {
-      console.error(error);
+      name: "Vasundhara",
 
-      alert("Something went wrong.");
-    }
+      description: "Order Payment",
+
+      handler: async function (response) {
+        const saveOrder = await fetch(
+          "https://vasundhar-ecommerce-production.up.railway.app/orders",
+          {
+            method: "POST",
+
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+
+            body: JSON.stringify({
+              items: cart,
+              total: total,
+            }),
+          },
+        );
+
+        if (saveOrder.ok) {
+          alert("Payment Successful!");
+
+          localStorage.removeItem("cart");
+
+          window.location.href = "myorders.html";
+        } else {
+          alert("Payment completed but order couldn't be saved.");
+        }
+      },
+
+      theme: {
+        color: "#7a1f1f",
+      },
+    };
+
+    const rzp = new Razorpay(options);
+
+    rzp.open();
   });
 }
