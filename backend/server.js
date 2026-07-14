@@ -353,6 +353,7 @@ app.get("/admin/dashboard", auth, admin, async (req, res) => {
 });
 
 app.post("/create-order", async (req, res) => {
+  console.log("Checkout Request:", JSON.stringify(req.body, null, 2));
   try {
     const { items } = req.body;
 
