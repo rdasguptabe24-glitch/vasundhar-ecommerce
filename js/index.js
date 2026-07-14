@@ -1,6 +1,6 @@
 const productContainer = document.getElementById("featuredProducts");
 
-fetch("https://vasundhar-ecommerce-production.up.railway.app/products")
+fetch(`${API_BASE_URL}/products`)
   .then((response) => response.json())
   .then((products) => {
     // Show only first 4 products
@@ -12,7 +12,7 @@ fetch("https://vasundhar-ecommerce-production.up.railway.app/products")
 
             <div class="product-card">
 
-                <img src="https://vasundhar-ecommerce-production.up.railway.app/uploads/${product.image}" alt="${product.name}">
+                <img src="${API_BASE_URL}/uploads/${product.image}" alt="${product.name}">
 
                 <div class="product-info">
 

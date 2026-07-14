@@ -3,7 +3,7 @@ const id = params.get("id");
 
 console.log("ID:", id);
 
-fetch(`https://vasundhar-ecommerce-production.up.railway.app/products/${id}`)
+fetch(`${API_BASE_URL}/products/${id}`)
   .then((response) => {
     if (!response.ok) {
       throw new Error("Product not found");

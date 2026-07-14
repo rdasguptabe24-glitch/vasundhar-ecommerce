@@ -8,7 +8,7 @@ if (!token) {
   window.location.href = "login.html";
 }
 
-fetch("https://vasundhar-ecommerce-production.up.railway.app/orders/my", {
+fetch(`${API_BASE_URL}/orders/my`, {
   headers: {
     Authorization: "Bearer " + token,
   },

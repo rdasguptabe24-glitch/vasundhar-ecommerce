@@ -7,7 +7,7 @@ if (!token) {
 const container = document.getElementById("ordersContainer");
 
 async function loadOrders() {
-  const response = await fetch("https://vasundhar-ecommerce-production.up.railway.app/admin/orders", {
+  const response = await fetch(`${API_BASE_URL}/admin/orders`, {
     headers: {
       Authorization: "Bearer " + token,
     },
@@ -89,7 +89,7 @@ loadOrders();
 
 async function updateStatus(orderId, status) {
   const response = await fetch(
-    `https://vasundhar-ecommerce-production.up.railway.app/admin/orders/${orderId}`,
+    `${API_BASE_URL}/admin/orders/${orderId}`,
     {
       method: "PUT",
 

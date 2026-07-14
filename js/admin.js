@@ -20,7 +20,7 @@ form.addEventListener("submit", async (e) => {
 
     formData.append("image", imageFile);
 
-    const uploadResponse = await fetch("https://vasundhar-ecommerce-production.up.railway.app/upload", {
+    const uploadResponse = await fetch(`${API_BASE_URL}/upload`, {
       method: "POST",
 
       body: formData,
@@ -52,7 +52,7 @@ form.addEventListener("submit", async (e) => {
 
     if (productId) {
       // Update existing product
-      response = await fetch(`https://vasundhar-ecommerce-production.up.railway.app/products/${productId}`, {
+      response = await fetch(`${API_BASE_URL}/products/${productId}`, {
         method: "PUT",
 
         headers: {
@@ -66,7 +66,7 @@ form.addEventListener("submit", async (e) => {
       alert("Product Updated Successfully!");
     } else {
       // Add new product
-      response = await fetch("https://vasundhar-ecommerce-production.up.railway.app/products", {
+      response = await fetch(`${API_BASE_URL}/products`, {
         method: "POST",
 
         headers: {
@@ -95,7 +95,7 @@ form.addEventListener("submit", async (e) => {
 const productList = document.getElementById("productList");
 
 async function loadProducts() {
-  const response = await fetch("https://vasundhar-ecommerce-production.up.railway.app/products");
+  const response = await fetch(`${API_BASE_URL}/products`);
 
   const products = await response.json();
 
@@ -135,7 +135,7 @@ async function deleteProduct(id) {
 
   const token = localStorage.getItem("token");
 
-  const response = await fetch(`https://vasundhar-ecommerce-production.up.railway.app/products/${id}`, {
+  const response = await fetch(`${API_BASE_URL}/products/${id}`, {
     method: "DELETE",
 
     headers: {
@@ -151,7 +151,7 @@ async function deleteProduct(id) {
 }
 
 async function editProduct(id) {
-  const response = await fetch(`https://vasundhar-ecommerce-production.up.railway.app/products/${id}`);
+  const response = await fetch(`${API_BASE_URL}/products/${id}`);
 
   const product = await response.json();
 

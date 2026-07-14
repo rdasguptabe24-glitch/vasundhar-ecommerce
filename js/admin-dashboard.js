@@ -13,7 +13,7 @@ function logout() {
 
 async function loadDashboard() {
   try {
-    const response = await fetch("https://vasundhar-ecommerce-production.up.railway.app/admin/dashboard", {
+    const response = await fetch(`${API_BASE_URL}/admin/dashboard`, {
       headers: {
         Authorization: "Bearer " + token,
       },
