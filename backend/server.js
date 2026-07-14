@@ -354,17 +354,40 @@ app.get("/admin/dashboard", auth, admin, async (req, res) => {
 
 app.post("/create-order", async (req, res) => {
   try {
-    const { amount } = req.body;
+    const { items } = req.body;
+
+    if (!items || items.length === 0) {
+      return res.status(400).json({
+        message: "Cart is empty",
+      });
+    }
+
+    let total = 0;
+
+    for (const item of items) {
+      const product = await Product.findById(item.id);
+
+      if (!product) {
+        return res.status(404).json({
+          message: `Product not found: ${item.id}`,
+        });
+      }
+
+      total += product.price * item.quantity;
+    }
 
     const options = {
-      amount: amount * 100, // Razorpay uses paise
+      amount: total * 100, // paise
       currency: "INR",
       receipt: "receipt_" + Date.now(),
     };
 
     const order = await razorpay.orders.create(options);
 
-    res.json(order);
+    res.json({
+      order,
+      total,
+    });
   } catch (error) {
     console.error(error);
 
@@ -381,7 +404,6 @@ app.post("/verify-payment", auth, async (req, res) => {
       razorpay_payment_id,
       razorpay_signature,
       items,
-      total,
     } = req.body;
 
     const body = razorpay_order_id + "|" + razorpay_payment_id;
@@ -396,6 +418,21 @@ app.post("/verify-payment", auth, async (req, res) => {
         success: false,
         message: "Payment verification failed",
       });
+    }
+
+    let total = 0;
+
+    for (const item of items) {
+      const product = await Product.findById(item.id);
+
+      if (!product) {
+        return res.status(404).json({
+          success: false,
+          message: "Product not found",
+        });
+      }
+
+      total += product.price * item.quantity;
     }
 
     const order = await Order.create({

@@ -114,12 +114,16 @@ if (checkoutBtn) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          amount: total,
+          items: cart,
         }),
       },
     );
 
-    const order = await orderResponse.json();
+    const data = await orderResponse.json();
+
+    const order = data.order;
+
+    const total = data.total;
 
     const options = {
       key: "rzp_test_TDR1xb0tCF0iVn",

@@ -50,14 +50,15 @@ function displayProducts(products) {
         </div>
 
         <button
-            class="add-cart"
-            data-name="${product.name}"
-            data-price="${product.price}"
-            data-image="${product.image}">
+    class="add-cart"
+    data-id="${product._id}"
+    data-name="${product.name}"
+    data-price="${product.price}"
+    data-image="${product.image}">
 
-            Add to Cart
+    Add to Cart
 
-        </button>
+</button>
 
     </div>
 
@@ -79,13 +80,14 @@ function attachCartEvents() {
       const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
       const product = {
+        id: button.dataset.id,
         name: button.dataset.name,
         price: Number(button.dataset.price),
         image: button.dataset.image,
         quantity: 1,
       };
 
-      const existing = cart.find((item) => item.name === product.name);
+      const existing = cart.find((item) => item.id === product.id);
 
       if (existing) {
         existing.quantity++;
