@@ -41,7 +41,7 @@ function renderCart() {
 <div class="cart-product">
 
 <img
-src="https://vasundhar-ecommerce-production.up.railway.app/products/${product.image}"
+src="https://vasundhar-ecommerce-production.up.railway.app/uploads/${product.image}"
 width="100">
 
 <div>
@@ -129,7 +129,7 @@ if (checkoutBtn) {
     }
 
     try {
-      const orderResponse = await fetch(`${API_BASE_URL}/create-order`, {
+      const orderResponse = await fetch("https://vasundhar-ecommerce-production.up.railway.app/create-order", {
         method: "POST",
 
         headers: {
