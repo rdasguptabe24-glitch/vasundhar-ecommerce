@@ -150,7 +150,7 @@ if (checkoutBtn) {
       const order = data.order;
 
       const options = {
-        key: "rzp_test_TE9CvKPcQ60vAQ",
+        key: "rzp_live_TEU06jEP91ocuq",
 
         amount: order.amount,
 
