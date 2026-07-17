@@ -2289,3 +2289,41 @@ background:#7f1d2d;
 transform:translateY(-2px);
 
 }
+
+@media (max-width: 768px) {
+
+  nav ul {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  header {
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+  }
+
+  .product-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+
+  .product-card img {
+    width: 100%;
+    height: auto;
+  }
+
+  .cart-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .cart-product {
+    flex-direction: column;
+  }
+
+  button {
+    width: 100%;
+  }
+}
