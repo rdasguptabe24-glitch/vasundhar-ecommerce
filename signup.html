@@ -6,11 +6,13 @@
     <title>Sign Up</title>
 
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 
 <body>
 
-<header>
+<header class="auth-header">
 
     <div class="logo">
         <a href="index.html">
@@ -18,62 +20,73 @@
         </a>
     </div>
 
-    <nav>
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="shop.html">Shop</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="contact.html">Contact</a></li>
-            <li>
-    <a href="login.html" id="loginLink">Login</a>
-</li>
-        </ul>
-    </nav>
+    <a href="index.html" class="back-home">
+        <i class="fa-solid fa-arrow-left"></i>
+        Continue Shopping
+    </a>
 
 </header>
 
-<main class="login-container">
+<main class="auth-page">
 
-    <h1>Create Account</h1>
+    <div class="auth-image">
 
-    <form id="signupForm">
+        <div class="overlay">
 
-        <input
-            type="text"
-            id="name"
-            placeholder="Full Name"
-            required>
+            <h1>Vasundhara</h1>
 
-        <br><br>
+            <p>Timeless Elegance. Crafted for You.</p>
 
-        <input
-            type="email"
-            id="email"
-            placeholder="Email"
-            required>
+        </div>
 
-        <br><br>
+    </div>
 
-        <input
-            type="password"
-            id="password"
-            placeholder="Password"
-            required>
+    <div class="auth-card">
 
-        <br><br>
+        <h2>Create Account</h2>
 
-        <button type="submit">
-            Sign Up
-        </button>
+        <p class="subtitle">
+            Join the Vasundhara family
+        </p>
 
-    </form>
+        <form id="signupForm">
 
-    <br>
+            <div class="input-group">
+                <input
+                    type="text"
+                    id="name"
+                    placeholder="Full Name"
+                    required>
+            </div>
 
-    <p>
-        Already have an account?
-        <a href="login.html">Login</a>
-    </p>
+            <div class="input-group">
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Email Address"
+                    required>
+            </div>
+
+            <div class="input-group">
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Password"
+                    required>
+            </div>
+
+            <button type="submit" class="signup-btn">
+                Create Account
+            </button>
+
+        </form>
+
+        <p class="login-link">
+            Already have an account?
+            <a href="login.html">Login</a>
+        </p>
+
+    </div>
 
 </main>
 
